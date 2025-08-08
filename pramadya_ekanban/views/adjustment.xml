@@ -1,0 +1,57 @@
+<odoo>
+    <!-- views list adjustment -->
+
+    <record model="ir.ui.view" id="view_adjustment_list">
+      <field name="name">adjustment.list</field>
+      <field name="model">adjustment</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="product_id"/>
+          <field name="adjustment_date"/>
+          <field name="schedule_date"/>
+          <field name="qty_kanban"/>
+          <field name="qty"/>
+          <field name="state" optional="show" readonly="1" decoration-info="state == 'draft'" decoration-success="state in 'done'" widget="badge"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- views form adjustment -->
+
+    <record model="ir.ui.view" id="view_adjustment_form">
+        <field name="name">adjustment.form</field>
+        <field name="model">adjustment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="product_id"/>
+                        <field name="line_id" />
+                        <field name="qty_kanban"/>
+                        <field name="qty"/>
+                        <field name="adjustment_date"/>
+                        <field name="schedule_date"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- actions adjustment -->
+
+    <record model="ir.actions.act_window" id="pramadya_ekanban.action_window_adjustment">
+      <field name="name">E-adjustment System</field>
+      <field name="res_model">adjustment</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- actions menu collecting -->
+
+    <menuitem name="E-Adjustment" id="pramadya_ekanban.menu_adjustment" parent="pramadya_ekanban.menu_master_data"
+              action="pramadya_ekanban.action_window_adjustment" sequence="3"/>
+
+</odoo>

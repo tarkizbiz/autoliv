@@ -1,0 +1,6 @@
+tabula-py
+tabula-py[jpype]
+openpyxl
+pdfplumber
+pyopenssl==21.0.0
+cryptography==3.4.8

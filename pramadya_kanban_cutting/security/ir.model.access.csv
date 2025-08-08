@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_content_card_tmmin,access_content_card_tmmin,model_content_card_tmmin,,1,1,1,1
+access_wiz_print_kanban_card,access_wiz_print_kanban_card,model_wiz_print_kanban_card,,1,1,1,1
+access_line_wiz_print_kanban_card,access_line_wiz_print_kanban_card,model_line_wiz_print_kanban_card,,1,1,1,1
+access_wiz_kanban_cutting,access_wiz_kanban_cutting,model_wiz_kanban_cutting,,1,1,1,1

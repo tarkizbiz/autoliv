@@ -1,0 +1,125 @@
+<odoo>
+    <!-- explicit list view definition -->
+    <record id="view_pramadya_res_partner" model="ir.ui.view">
+        <field name="name">pramadya.res.partner</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+            <page string="Customer Cycle" name="customer_cycle" autofocus="autofocus">
+                <field name="customer_cycle" >
+                  <tree editable="bottom">
+                      <field name="name"/>
+                      <field name="cycle"/>
+                      <field name="days_pull"/>
+                      <field name="time" widget="float_time"/>
+                      <field name="start_time" widget="float_time"/>
+                      <field name="end_time" widget="float_time"/>
+                  </tree>
+                </field>
+            </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="pramadya_ekanban.list_line">
+      <field name="name">pramadya.line.list</field>
+      <field name="model">pramadya.line</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="line_type"/>
+          <field name="capacity"/>
+          
+          <!-- <field name="state" optional="show" readonly="1" decoration-info="state == 'draft'" decoration-success="state in 'done'" widget="badge"/> -->
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="pramadya_ekanban.list_l2l_config">
+      <field name="name">pramadya.l2l.config.list</field>
+      <field name="model">pramadya.l2l.config</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="server"/>
+          <field name="site"/>
+          <field name="url"/>
+          <field name="api_key"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+  <record id="view_line_document_form" model="ir.ui.view">
+      <field name="name">pramadya.line.form</field>
+      <field name="model">pramadya.line</field>
+      <field name="arch" type="xml">
+          <form>
+              <header>
+                  <!-- <field name="state" widget="statusbar" statusbar_visible="draft,done"/> -->
+              </header>
+              <sheet>
+                  <group>
+                      <field name="line_type"/>
+                      <field name="name"/>
+                      <field name="capacity"/>
+                      <field name="product_cycle"/>
+                  </group>
+              </sheet>
+          </form>
+      </field>
+  </record>
+
+  <record id="view_l2l_config_document_form" model="ir.ui.view">
+      <field name="name">pramadya.l2l.config.form</field>
+      <field name="model">pramadya.l2l.config</field>
+      <field name="arch" type="xml">
+          <form>
+              <header>
+                  <button name="test_config" string="Test Connection" invisible="state != 'active'" type="object" class="oe_highlight"/>
+                  <button name="set_active" string="Set Active" invisible="state != 'draft'" type="object" class="oe_highlight"/>
+                  <button name="set_inactive" string="Set Inactive" invisible="state != 'active'" type="object" class="oe_highlight"/>
+                  <field name="state" widget="statusbar" statusbar_visible="draft,active"/>
+              </header>
+              <sheet>
+                  <div class="oe_title">
+                      <label for="url"/>
+                      <h1>
+                          <field name="url" placeholder="e.g. https://autoliv-asia.leading2lean.com"/>
+                      </h1>
+                  </div>
+                  <group>
+                      <field name="server"/>
+                      <field name="site"/>
+                      <field name="api_key"/>
+                  </group>
+              </sheet>
+          </form>
+      </field>
+  </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="pramadya_ekanban.action_window_line">
+      <field name="name">Line Capacity</field>
+      <field name="res_model">pramadya.line</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="pramadya_ekanban.action_window_l2l_config">
+      <field name="name">L2L Setting</field>
+      <field name="res_model">pramadya.l2l.config</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- actions -->
+
+    <menuitem name="Configuration" id="pramadya_ekanban.menu_master_data" parent="pramadya_ekanban.menu_root" groups="pramadya_ekanban.group_elot_view" sequence="100"/>
+    <menuitem name="Line Capacity" id="pramadya_ekanban.menu_line" parent="pramadya_ekanban.menu_master_data"
+              action="pramadya_ekanban.action_window_line"/>
+    <menuitem name="L2L Setting" id="pramadya_ekanban.menu_l2l_config" parent="pramadya_ekanban.menu_master_data"
+              action="pramadya_ekanban.action_window_l2l_config"/>
+    
+
+</odoo>

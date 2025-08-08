@@ -1,0 +1,130 @@
+<odoo>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="pramadya_ekanban.list_lot">
+      <field name="name">pramadya.lot.list</field>
+      <field name="model">pramadya.lot</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="product_id"/>
+          <field name="line_id"/>
+          <field name="qty"/>
+          <field name="capacity"/>
+          <field name="state" optional="show" readonly="1" decoration-info="state == 'draft'" decoration-success="state in 'done'" widget="badge"/>
+        </tree>
+      </field>
+    </record>
+
+  <record id="view_lot_document_form" model="ir.ui.view">
+      <field name="name">pramadya.lot.form</field>
+      <field name="model">pramadya.lot</field>
+      <field name="arch" type="xml">
+          <form>
+              <header>
+                  <field name="state" widget="statusbar" statusbar_visible="draft,ready,done"/>
+                  <button name="send_kanban" string="Move to Kanban Rail" invisible="state == 'done'" type="object" class="oe_highlight"/>
+                  <!-- <button name="split" string="Split" type="object" invisible="state == 'done'" confirm="Are you sure to split this LOT?" class="oe_highlight"/> -->
+              </header>
+              <sheet>
+                  <group>
+                      <field name="product_id"/>
+                      <field name="qty"/>
+                      <field name="capacity"/>
+                      <field name="line_id"/>
+                      <!-- <field name="partner_id"/>
+                      <field name="schedule_date"/>
+                      <field name="due_date"/> -->
+                  </group>
+                  <notebook>
+                  <page name="Delivery notes" string="Delivery Note">
+                    <field name="lot_details" nolabel="1">
+                      <tree>
+                        <field name="lot_id" readonly="1"/>
+                        <field name="delivery_note"/>
+                        <field name="pack"/>
+                        <field name="qty" />
+                        <field name="qty_kanban" />
+                        <field name="order_date" />
+                        <field name="create_date" />
+                        <field name="production_date" />
+                      </tree>
+                    </field>
+                  </page>
+                  </notebook>
+              </sheet>
+          </form>
+      </field>
+  </record>
+
+  <record model="ir.ui.view" id="view_lot_document_kanban">
+      <field name="name">pramadya.lot.kanban</field>
+      <field name="model">pramadya.lot</field>
+      <field name="arch" type="xml">
+          <kanban class="o_kanban_mobile" default_group_by="line_id" group_create="false" sample="1">
+              <field name="line_id" />
+              <field name="product_id"/>
+              <field name="partner_id"/>
+              <field name="schedule_date"/>
+              <field name="due_date"/>
+              <field name="qty"/>
+              <field name="capacity"/>
+              <field name="aid_partnumber" string="AID P/N" optional="show"/>
+              <field name="default_code" optional="show"/>
+              <field name="state"/>
+              <templates>
+                  <!-- <t t-name="kanban-menu">
+                      <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit</a></t>
+                      <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                  </t> -->
+                  <t t-name="kanban-box">
+                      <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                          <div class="oe_kanban_content flex-grow-1">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title"><field name="default_code"/></strong>
+                                <div>
+                                  <field name="aid_partnumber" string="AID P/N" optional="show"/>
+                                </div>
+                                <div>
+                                    <div class="o_kanban_record_title">
+                                      <span>
+                                          <field name="qty"/>
+                                        of
+                                          <field name="capacity"/>
+                                      </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <strong>
+                                            <field name="state" widget="label_selection" options="{'classes': {'planning': 'default','scheduled': 'warning', 'confirmed': 'warning', 'completed': 'success'}}"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                          </div>
+                      </div>
+                  </t>
+              </templates>
+          </kanban>
+          </field>
+  </record>
+  
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="pramadya_ekanban.action_window_lot">
+      <field name="name">E-Lot System</field>
+      <field name="res_model">pramadya.lot</field>
+      <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <!-- actions -->
+
+    <menuitem name="E-Lot System" id="pramadya_ekanban.menu_lot" parent="pramadya_ekanban.menu_root"
+              action="pramadya_ekanban.action_window_lot" sequence="2"/>
+
+</odoo>

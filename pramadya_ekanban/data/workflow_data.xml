@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+    <!-- OCR Delivery Note -->
+        <record id="documents_delivery_note_folder" model="documents.folder" forcecreate="0">
+            <field name="name">Delivery</field>
+            <field name="description" type="html">
+                <center>
+                    <p>Automate your Delivery Note using scanned documents or emails sent to <span class="o_folder_description_alias"><strong>inbox-financial</strong> email alias</span>.</p>
+                </center>
+            </field>
+            <field name="sequence">100</field>
+        </record>
+        <record id="documents_scanned_delivery_note_folder" model="documents.folder" forcecreate="0">
+            <field name="name">Scanned Delivery</field>
+            <field name="description" type="html">
+                <center>
+                    <p>Scanned Delivery Note using scanned documents or emails sent to <span class="o_folder_description_alias"><strong>inbox-financial</strong> email alias</span>.</p>
+                </center>
+            </field>
+            <field name="sequence">101</field>
+        </record>
+        <record id="documents_delivery_note_rule" model="documents.workflow.rule" forcecreate="0">
+            <field name="sequence">100</field>
+            <field name="name">OCR Delivery Note</field>
+            <field name="create_model">stock.picking</field>
+            <field name="domain_folder_id" ref="documents_delivery_note_folder"/>
+            <field name="folder_id" ref="documents_scanned_delivery_note_folder"/>
+        </record>
+    </data>
+</odoo>

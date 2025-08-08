@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+
+
+<t t-name="AutoReload.ListView.buttons" t-inherit="web.ListView.Buttons" t-inherit-mode="extension" owl="1">
+    <xpath expr="//div[hasclass('o_list_buttons')]" position="attributes">
+        <attribute name="style">float: left !important;</attribute>
+    </xpath>
+
+    <xpath expr="//div[hasclass('o_list_buttons')]" position="after">
+        <t t-call="AutoReload.DropdownOption"/>
+    </xpath>
+</t>
+
+<!--<t t-name="AutoReload.ListView.buttons_1" t-inherit="account.ListView.Buttons" t-inherit-mode="extension" owl="1">-->
+<!--    <xpath expr="//div[hasclass('o_list_buttons')]" position="attributes">-->
+<!--        <attribute name="style">float: left !important;</attribute>-->
+<!--    </xpath>-->
+<!--    <xpath expr="//div[hasclass('o_list_buttons')]" position="after">-->
+<!--        <t t-call="AutoReload.DropdownOption"/>-->
+<!--    </xpath>-->
+<!--</t>-->
+
+<!--<t t-name="AutoReload.ListView.buttons_2" t-inherit="stock.InventoryReport.Buttons" t-inherit-mode="extension" owl="1">-->
+<!--    <xpath expr="//div[hasclass('o_list_buttons')]" position="attributes">-->
+<!--        <attribute name="style">float: left !important;</attribute>-->
+<!--    </xpath>-->
+<!--    <xpath expr="//div[hasclass('o_list_buttons')]" position="after">-->
+<!--        <t t-call="AutoReload.DropdownOption"/>-->
+<!--    </xpath>-->
+<!--</t>-->
+
+<t t-name="AutoReload.KanbanView.buttons" t-inherit="web.KanbanView.Buttons" t-inherit-mode="extension" owl="1">
+    <xpath expr="//div[hasclass('align-items-baseline')]" position="attributes">
+        <attribute name="style">float: left !important;</attribute>
+    </xpath>
+
+    <xpath expr="//div[hasclass('align-items-baseline')]" position="after">
+        <t t-call="AutoReload.DropdownOption"/>
+    </xpath>
+</t>
+
+<!--<t t-name="AutoReload.KanbanView.buttons_1" t-inherit="account.KanbanView.Buttons" t-inherit-mode="extension" owl="1">-->
+<!--    <xpath expr="//div[hasclass('align-items-baseline')]" position="attributes">-->
+<!--        <attribute name="style">float: left !important;</attribute>-->
+<!--    </xpath>-->
+
+<!--    <xpath expr="//div[hasclass('align-items-baseline')]" position="after">-->
+<!--        <t t-call="AutoReload.DropdownOption"/>-->
+<!--    </xpath>-->
+<!--</t>-->
+
+
+<t t-name="AutoReload.DropdownOption" owl="1">
+    <div class="dropdown auto-reload-options ml-2 d-flex" style="float: right;" role="toolbar" aria-label="AutoReload actions">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+            Auto Reload In
+        </button>
+
+        <div class="dropdown-menu auto-reload-options" role="menu">
+              <t t-set="is_custom_minute" t-value="minute_reload > 0 and minute_reload != 5 and minute_reload != 10 and minute_reload != 20"/>
+
+              <div class="d-flex">
+                  <div class="border-right o_py border-primary" title="Auto Reload In 5 Minutes." tabindex="0">
+                      <span class="btn btn-light border-0 p-2">
+                          <i data-minute="5" t-att-class="minute_reload == 5 ? 'fa fa-fw py-2 fa-check-square text-primary' : 'fa fa-fw py-2 fa-square-o'"/>
+                      </span>
+                  </div>
+                  <div role="button" title="Auto Reload In 5 Minutes" tabindex="0" class="d-flex flex-grow-1 align-items-center py-0 log_into pl-2 o_py alert-primary ml-1 mr-2">
+                      <span class="pr-3 text-900 font-weight-bold">5 Minutes</span>
+                  </div>
+              </div>
+
+              <div class="d-flex">
+                  <div class="border-right o_py border-primary" title="Auto Reload In 10 Minutes." tabindex="0">
+                      <span class="btn btn-light border-0 p-2">
+                          <i data-minute="10" t-att-class="minute_reload == 10 ? 'fa fa-fw py-2 fa-check-square text-primary' : 'fa fa-fw py-2 fa-square-o'"/>
+                      </span>
+                  </div>
+                  <div role="button" title="Auto Reload In 10 Minutes" tabindex="0" class="d-flex flex-grow-1 align-items-center py-0 log_into pl-2 o_py alert-primary ml-1 mr-2">
+                      <span class="pr-3 text-900 font-weight-bold">10 Minutes</span>
+                  </div>
+              </div>
+
+              <div class="d-flex">
+                  <div class="border-right o_py border-primary" title="Auto Reload In 20 Minutes." tabindex="0">
+                      <span class="btn btn-light border-0 p-2">
+                          <i data-minute="20" t-att-class="minute_reload == 20 ? 'fa fa-fw py-2 fa-check-square text-primary' : 'fa fa-fw py-2 fa-square-o'"/>
+                      </span>
+                  </div>
+                  <div role="button" title="Auto Reload In 20 Minutes" tabindex="0" class="d-flex flex-grow-1 align-items-center py-0 log_into pl-2 o_py alert-primary ml-1 mr-2">
+                      <span class="pr-3 text-900 font-weight-bold">20 Minutes</span>
+                  </div>
+              </div>
+
+              <div class="d-flex">
+                  <div class="border-right o_py border-primary" title="Input minute auto reload." tabindex="0">
+                      <span class="btn btn-light border-0 p-2">
+                          <i t-att-data-minute="is_custom_minute ? minute_reload : 0" t-att-class="is_custom_minute ? 'fa fa-fw py-2 fa-check-square text-primary custom-minute' : 'fa fa-fw py-2 fa-square-o custom-minute'"/>
+                      </span>
+                  </div>
+                  <div role="button" title="Input minute auto reload." tabindex="0" class="d-flex flex-grow-1 align-items-center py-0 log_into pl-2 o_py alert-primary ml-1 mr-2">
+                      <input type="number" min="0" t-att-value="is_custom_minute ? minute_reload : ''" class="o_field_char o_field_widget o_quick_editable o_input custom-minute" style="width:100px;" placeholder="Set Minutes"/> <span class="pr-3 text-900 font-weight-bold"> Minutes</span>
+                  </div>
+              </div>
+
+        </div>
+    </div>
+</t>
+
+</templates>

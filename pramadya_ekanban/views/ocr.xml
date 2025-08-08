@@ -1,0 +1,373 @@
+<odoo>
+    <record id="view_pramadya_product_template_ocr" model="ir.ui.view">
+        <field name="name">pramadya.ocr.product.template</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//button[@name='154']" position="replace">
+            </xpath> -->
+            <!-- <xpath expr="//label[@for='list_price']" position="replace">
+            </xpath>
+            <field name="list_price" position="replace">
+              <field name="list_price" class="oe_inline" invisible="1" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+            </field> -->
+            <xpath expr="//label[@for='standard_price']" position="replace">
+            </xpath>
+            <field name="standard_price" position="replace">
+            </field>
+            <!-- <field name="product_tag_ids" position="replace">
+            </field> -->
+        </field>
+    </record>
+    <record id="view_pramadya_product_ocr" model="ir.ui.view">
+        <field name="name">pramadya.ocr.product</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Kanban Calculation" name="Kanban_calculation">
+                    <group>
+                        <group  string="Input Calculation" name="input_calculation">
+                            <label for="store"/>
+                            <div>
+                                <field name="store" class="oe_inline" style="vertical-align:baseline"/> days
+                            </div>
+                            <label for="stagnasi"/>
+                            <div>
+                                <field name="stagnasi" string="Stagnasi + Conveyance" class="oe_inline" style="vertical-align:baseline"/> days
+                            </div>
+                            <label for="fluktuasi"/>
+                            <div>
+                                <field name="fluktuasi" class="oe_inline" style="vertical-align:baseline"/> %
+                            </div>
+                            <label for="safety"/>
+                            <div>
+                                <field name="safety" class="oe_inline" style="vertical-align:baseline"/> days
+                            </div>
+                            <label for="shikumi"/>
+                            <div>
+                                <field name="shikumi" class="oe_inline" style="vertical-align:baseline"/> days
+                            </div>
+                            <label for="collecting"/>
+                            <div>
+                                <field name="collecting" class="oe_inline" style="vertical-align:baseline"/> days
+                            </div>
+                            <!-- <field name="store"/>
+                            <field name="stagnasi" string="Stagnasi + Conveyance"/>
+                            <field name="fluktuasi"/>
+                            <field name="safety"/>
+                            <field name="shikumi"/> -->
+                        </group>
+                    </group>
+                    <field name="adjustment_ids" string="Adjustment Details" groups="base.group_no_one"/>
+                    <field name="collecting_ids" string="Collecting Details" groups="base.group_no_one"/>
+                    <field name="heijunka_ids" groups="base.group_no_one"/>
+                    <field name="lot_ids" groups="base.group_no_one"/>
+                    <field name="rail_ids" groups="base.group_no_one"/>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='default_code']" position="after">
+                <field name="aid_partnumber" string="AID P/N" optional="show"/>
+                <field name="customer_partnumber" string="Customer P/N" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='uom_po_id']" position="after">
+                <field name="lot" optional="show"/>
+                <field name="lot_size" optional="show"/>
+                <field name="primary_line_id"/>
+                <field name="secondary_line_id" invisible="1"/> 
+                <field name="cycle_time"/>
+                <field name="heijunka_cycle"/>
+                <field name="demand_monthly" string="Forecast (Demand)"/>
+                <field name="std_rotation" optional="show" string="Kanban Calculation"/>
+                <field name="customer_id"/> 
+            </xpath>
+
+            <xpath expr="//label[@for='lst_price']" position="replace">
+            </xpath>
+            <field name="lst_price" position="replace">
+              <field name="lst_price" class="oe_inline" invisible="1" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+            </field>
+            <field name="product_tag_ids" position="replace">
+            </field>
+            <field name="additional_product_tag_ids" position="replace">
+            </field>
+        </field>
+    </record>
+    <record id="view_pramadya_product_tree_ocr" model="ir.ui.view">
+        <field name="name">pramadya.ocr.tree.product</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="before">
+                <field name="l2l_product_id" optional="show" readonly="1"/>
+                <field name="aid_partnumber" optional="show" readonly="1"/>
+                <field name="customer_partnumber" optional="show" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='lst_price']" position="replace">
+                <field name="lst_price" optional="hide" string="Sales Price"/>
+            </xpath>
+            <xpath expr="//field[@name='standard_price']" position="replace">
+                <field name="standard_price" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='qty_available']" position="before">
+            <field name="lot" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='qty_available']" position="after">
+                <field name="total_kanban" string="Kanban On Hand" optional="show"/>
+                <field name="daily_demand" optional="show"/>
+                <field name="kanban_rotation" optional="show"/>
+                <field name="status_stock" decoration-info="status_stock == 'maksimum'" decoration-success="status_stock == 'normal'" decoration-warning="status_stock == 'minimum'" decoration-danger="status_stock == 'urgent'" widget="badge" class="text-dark" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_pramadya_picking_tree_ocr" model="ir.ui.view">
+        <field name="name">pramadya.ocr.tree.picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='scheduled_date']" position="after">
+                <field name="pickup_date" optional="show" invisible="state in ('done', 'cancel')" readonly="state in ['cancel', 'done']"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_pramadya_stock_move_kanban_ocr" model="ir.ui.view">
+        <field name="name">pramadya.stock.move.kanban</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_kandan"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_kanban_record_body')]" position="replace">
+                <div class="o_kanban_record_body">
+                    <div invisible="not is_inventory">
+                        <span>Initial Demand <field name="product_uom_qty" readonly="state == 'done'"/></span><br/>
+                        <span>Quantity <field name="quantity"/></span>
+                    </div>
+                    <div invisible="is_inventory">
+                        <span>Quantity <field name="quantity" /> / <field name="product_uom_qty"/></span>
+                    </div>
+                    <div invisible="is_inventory">
+                        <span>Customer Kanban <field name="scanned_kanban" /> / <field name="qty_kanban"/></span>
+                    </div>
+                    <div invisible="is_inventory">
+                        <span>Scanned <field name="scanned"/></span>
+                    </div>
+                    <div invisible="is_inventory">
+                        <span>KC<field name="scanned_kanban_customer"/></span>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pramadya_stock_move_tree" model="ir.ui.view">
+        <field name="name">pramadya.stock.move.tree</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_tree"/>
+        <field name="arch" type="xml">
+            <field name="date" position="after">
+                <field name="pickup_date"/>
+            </field>
+        </field>
+    </record>
+    
+    <record id="view_pramadya_picking_ocr" model="ir.ui.view">
+        <field name="name">pramadya.ocr.picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_validate']" position="attributes">
+                <attribute name="string">Done</attribute>
+                <attribute name="invisible">state in ('draft', 'confirmed', 'done', 'cancel') or status_pickup == 'palleting'</attribute>
+            </xpath>
+            <xpath expr="//button[hasclass('o_btn_validate')]" position="attributes">
+                <attribute name="string">Done</attribute>
+                <attribute name="invisible">state in ('waiting', 'assigned', 'done', 'cancel') or status_pickup == 'palleting'</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_assign']" position="after">
+                <button name="action_ready" invisible="status_pickup != 'palleting'" string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user" data-hotkey="r"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='date_deadline']" position="after">
+                <field name="order_date" optional="show"/>
+                <field name="pickup_date" optional="show"/>
+                <field name="start_pull" optional="show"/>
+                <field name="end_pull" optional="show"/>
+                <field name="order_ready" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='product_uom']" position="after">
+                <field name="qty_kanban" optional="show"/>
+                <field name="scanned_kanban" readonly="1" force_save="1" optional="show"/>
+                <field name="missing_kanban" groups="pramadya_ekanban.group_ekanban_admin"/>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']" position="before">
+                <h1 class="d-flex">
+                    <field name="barcode" placeholder="Scan Kanban AID" invisible="state in ('draft','done','cancel')"/>
+                </h1>
+            </xpath>
+            <xpath expr="//field[@name='location_id']" position="after">
+                <field name="cycle" optional="show"/>
+                <field name="result" optional="show"/>
+                <field name="status_pickup" optional="show"/>
+                <field name="qty_kanban" optional="show"/>
+                <field name="scanned_kanban_customer_header" string="KC"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="scan_barcode" string="Scanned Barcode">
+                    <field name="scanned_line">
+                        <tree string="Scanned Barcode">
+                            <field name="date_scan"/>
+                            <field name="barcode"/>
+                            <field name="product_id"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='picked']" position="after">
+                <field name="scanned" optional="show" column_invisible="parent.state=='draft'"/>
+                <field name="scanned_kanban_customer" optional="show" string="KC" column_invisible="parent.state=='draft'"/>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity']" position="attributes">
+                <attribute name="readonly">True</attribute>
+                <attribute name="force_save">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_id']"
+                   position="before">
+                <!-- <field name="barcode"/> -->
+                <field name="aid_partnumber" string="AID P/N" optional="show"/>
+                <field name="customer_partnumber" string="Customer P/N" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="pramadya_ekanban.list_history_barcode">
+      <field name="name">list.history.barcode</field>
+      <field name="model">pramadya.scan</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="batch"/>
+            <field name="pack"/>
+            <field name="barcode"/>
+            <field name="aid_partnumber"/>
+            <field name="picking_id" string="DN Number"/>
+            <field name="date_scan"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="pramadya_product_stock_tree">
+        <field name="name">product.product.stock.tree</field>
+        <field name="model">product.product</field>
+        <field name="priority" eval="100"/>
+        <field name="arch" type="xml">
+            <tree sample="1" js_class="stock.stock_report_list_view">
+                <field name="id" column_invisible="True"/>
+                <field name="display_name" string="Product"/>
+                <field name="categ_id" optional="hide"/>
+                <field name="qty_available" string="On Hand" sum="Total On Hand"/>
+                <field name="e_lot" optional="show"/>
+                <field name="e_rail" optional="show"/>
+                <field name="fg_rotation" optional="show" string="Total FG Rotation"/>
+                <field name="demand_monthly" string="Forecast (Demand)"/>
+                <field name="daily_demand" optional="show"/>
+                <field name="lot_size" optional="show"/>
+                <field name="snp" optional="show"/>
+                <field name="total_kanban" string="Kanban On Hand" optional="show"/>
+                <field name="kanban_e_collecting" optional="show"/>
+                <field name="kanban_e_heijunka" optional="show"/>
+                <field name="kanban_e_lot" optional="show"/>
+                <field name="kanban_e_rail" optional="show"/>
+                <field name="kanban_rotation" optional="show"/>
+                <field name="std_rotation" optional="show" string="Kanban Calculation"/>
+                <field name="adjustment" optional="show"/>
+                <field name="selisih" optional="show"/>
+                <!-- <field name="free_qty" string="Free to Use" sum="Total Free to Use"/>
+                <field name="incoming_qty" optional="show" sum="Total Incoming"/>
+                <field name="outgoing_qty" optional="show" sum="Total Outgoing"/>
+                <field name="virtual_available" string="Forecasted" optional="hide" sum="Total Forecasted"/> -->
+                <field name="uom_id" string="Unit" groups="uom.group_uom" options="{'no_create': True}"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Kanban Calculation -->
+    <record model="ir.ui.view" id="pramadya_product_kanban_calculation_tree">
+        <field name="name">product.product.stock.tree</field>
+        <field name="model">product.product</field>
+        <field name="priority" eval="100"/>
+        <field name="arch" type="xml">
+            <tree sample="1" js_class="stock.stock_report_list_view">
+                <field name="id" column_invisible="True"/>
+                <field name="aid_partnumber" optional="show"/>
+                <field name="customer_partnumber" optional="show"/>
+                <field name="default_code" optional="show"/>
+                <field name="primary_line_id" optional="show"/>
+                <field name="customer_id" optional="show"/>
+                <field name="demand_monthly" string="Monthly Demand Forecast"/>
+                <field name="working_days" optional="show"/>
+                <field name="daily_demand" optional="show"/>
+                <field name="snp" optional="show"/>
+                <field name="working_hour" string="Working Hour" widget="float_time" optional="hide" />
+                <field name="working_mins" string="Working Mins" optional="show" />
+                <field name="qty_store" string="Store" optional="show"/>
+                <field name="qty_elot" string="E-lot" optional="show"/>
+                <field name="qty_erail" string="E-rail" optional="show"/>
+                <field name="qty_stagnasi" string="Stagnasi" optional="show"/>
+                <field name="qty_base" string="Base" optional="show"/>
+                <field name="qty_fluktuasi" string="Fluktuasi" optional="show"/>
+                <field name="qty_safety" string="Safety" optional="show"/>
+                <field name="qty_shikumi" string="Shikumi" optional="show"/>
+                <field name="qty_collecting" string="Collecting" optional="show"/>
+                <field name="std_rotation" optional="show" string="Kanban Calculation"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="pramadya_ekanban.action_history_barcode">
+      <field name="name">History Barcode</field>
+      <field name="res_model">pramadya.scan</field>
+      <field name="view_mode">tree</field>
+    </record>
+
+
+    <record id="pramadya_product_normal_action" model="ir.actions.act_window">
+        <field name="name">Kanban Rotation</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pramadya_product_stock_tree"/>
+        <field name="search_view_id" ref="stock.stock_product_search_form_view"/>
+        <field name="context">{'default_detailed_type': 'product'}</field>
+        <field name="domain">[('detailed_type', '=', 'product'),('lot', '=', 'lot')]</field>
+    </record>
+
+    <!-- Action Menu Kanban Calculation -->
+    <record id="pramadya_product_kanban_calculation" model="ir.actions.act_window">
+        <field name="name">Kanban Calculation</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pramadya_product_kanban_calculation_tree"/>
+        <field name="search_view_id" ref="stock.stock_product_search_form_view"/>
+        <field name="context">{'default_detailed_type': 'product'}</field>
+        <field name="domain">[('detailed_type', '=', 'product'),('lot', '=', 'lot')]</field>
+    </record>
+
+    <!-- Top menu item -->
+
+    <menuitem name="AID E-Kanban" id="pramadya_ekanban.menu_root" groups="pramadya_ekanban.group_elot_view,pramadya_ekanban.group_erail_view" web_icon="pramadya_ekanban,static/description/ekanban.png"/>
+    <!-- actions -->
+
+
+    <menuitem name="History Barcode" id="pramadya_ekanban.menu_history_kanban" parent="pramadya_ekanban.menu_root"
+              action="pramadya_ekanban.action_history_barcode" groups="pramadya_ekanban.group_elot_view" sequence="80"/>
+    <menuitem name="Delivery Orders" id="pramadya_ekanban.menu_delivery_list" parent="pramadya_ekanban.menu_root"
+              action="stock.action_picking_tree_outgoing" groups="pramadya_ekanban.group_elot_view" sequence="80"/>
+    <menuitem name="Products" id="pramadya_ekanban.menu_product_list" parent="pramadya_ekanban.menu_root"
+              action="stock.stock_product_normal_action" groups="pramadya_ekanban.group_elot_view" sequence="80"/>
+    <menuitem name="Kanban Rotation" id="pramadya_ekanban.menu_pramadya_product_normal" parent="pramadya_ekanban.menu_root"
+              action="pramadya_ekanban.pramadya_product_normal_action" groups="pramadya_ekanban.group_elot_view" sequence="80"/>
+    <menuitem name="Kanban Calculation" id="pramadya_ekanban.menu_pramadya_kanban_calculation" parent="pramadya_ekanban.menu_root"
+              action="pramadya_ekanban.pramadya_product_kanban_calculation" groups="pramadya_ekanban.group_elot_view" sequence="80"/>
+    
+</odoo>

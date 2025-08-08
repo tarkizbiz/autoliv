@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="contentcard_tmmin_form_view">
+            <field name="name">content.card.tmmin.form</field>
+            <field name="model">content.card.tmmin</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="supplier_name"/>
+                                <field name="supplier_code"/>
+                                <field name="departure_time"/>
+                                <field name="arrival_time"/>
+                                <field name="route"/>
+                                <field name="cycle"/>
+                                <field name="supplier_info"/>
+                                <field name="dock_code"/>
+                                <field name="part_code"/>
+                                <field name="part_name"/>
+                                <field name="part_sequence"/>
+                                <field name="unique_no"/>
+                                <field name="unique_no_seq"/>
+                            </group>
+                            <group>
+                                <field name="pcs_kanban"/>
+                                <field name="order_no"/>
+                                <field name="qr_code"/>
+                                <field name="real_qr_code"/>
+                                <field name="progres_lane_no"/>
+                                <field name="out_time"/>
+                                <field name="manifest_no"/>
+                                <field name="conveyance_no"/>
+                                <field name="part_address"/>
+                                <field name="printed"/>
+                                <field name="scan_id"/>
+                            </group>
+                        </group>
+                       
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="content_card_tmmin_tree_view">
+            <field name="name">content.card.tmmin.tree</field>
+            <field name="model">content.card.tmmin</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <header>
+                        <button name="print_pdf_content" string="Print Card" class="oe_highlight" type="object"/>
+                    </header>
+                    <field name="supplier_name"/>
+                    <field name="supplier_code"/>
+                    <field name="departure_time"/>
+                    <field name="arrival_time"/>
+                    <field name="route"/>
+                    <field name="cycle"/>
+                    <field name="supplier_info"/>
+                    <field name="dock_code"/>
+                    <field name="part_code"/>
+                    <field name="part_name"/>
+                    <field name="part_sequence"/>
+                    <field name="unique_no"/>
+                    <field name="unique_no_seq"/>
+                    <field name="pcs_kanban"/>
+                    <field name="order_no"/>
+                    <field name="qr_code"/>
+                    <field name="progres_lane_no"/>
+                    <field name="out_time"/>
+                    <field name="manifest_no"/>
+                    <field name="conveyance_no"/>
+                    <field name="part_address"/>
+                    <field name="printed"/>
+                    <field name="scan_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_contentcard_tmmin" model="ir.actions.act_window">
+            <field name="name">Kanban Card Tmmin</field>
+            <field name="res_model">content.card.tmmin</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_content_card" 
+              name="Kanban Card"
+              sequence="1" 
+              parent="documents.menu_root"/>
+
+
+        <menuitem name="PT TMMIN" id="main_content_card_tmmin" parent="pramadya_kanban_cutting.menu_content_card" sequence="1" action="action_contentcard_tmmin"/>
+
+
+
+    </data>
+</odoo>

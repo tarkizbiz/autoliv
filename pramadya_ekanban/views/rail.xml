@@ -1,0 +1,284 @@
+<odoo>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="pramadya_ekanban.list_pitch">
+      <field name="name">pramadya.pitch.list</field>
+      <field name="model">pitch</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="id_pitch"/>
+          <field name="site"/>
+          <field name="area"/>
+          <field name="line"/>
+          <field name="name"/>
+          <field name="actual_product"/>
+          <field name="actual"/>
+          <field name="demand"/>
+          <field name="shift_start_date"/>
+          <field name="pitch_start"/>
+          <field name="pitch_end"/>
+          <field name="comment"/>
+          <field name="active"/>
+    <!-- build_sequence  = fields.Integer()
+    changeover_earned_hours = fields.Float()
+    created = fields.Datetime()
+    createdby= fields.Char()
+    cycle_time = fields.Float()
+    downtime_minutes = fields.Float()
+    earned_hours = fields.Float()
+    has_actual_details = fields.Boolean()
+    has_operator_count_details = fields.Boolean()
+    has_scrap_details = fields.Boolean()
+    ideal_cycle_time = fields.Float()
+    lastupdated= fields.Datetime()
+    lastupdatedby= fields.Datetime()
+    nonproduction_minutes = fields.Float()
+    operational_availability = fields.Float()
+    operator_count = fields.Float()
+    overall_equipment_effectiveness = fields.Float()
+    planned_operator_count = fields.Float()
+    planned_product= fields.Integer()
+    planned_product_order_group= fields.Integer()
+    planned_production_minutes = fields.Float()
+    product_order_group= fields.Integer()
+    scrap = fields.Float()
+    shift= fields.Integer() -->
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="pramadya_ekanban.list_rail">
+      <field name="name">pramadya.rail.list</field>
+      <field name="model">pramadya.rail</field>
+      <field name="arch" type="xml">
+        <tree default_order="stock_condition">
+          <field name="schedule_date"/>
+          <field name="due_date"/>
+          <field name="actual_date"/>
+          <field name="product_id"/>
+          <field name="qty"/>
+          <field name="stock_condition"/>
+          <field name="cycle"/>
+          <field name="line_id"/>
+          <field name="state" optional="show" readonly="1" decoration-info="state == 'queue'" decoration-success="state in 'done'" widget="badge"/>
+        </tree>
+      </field>
+    </record>
+
+  <record id="view_rail_document_form" model="ir.ui.view">
+      <field name="name">pramadya.rail.form</field>
+      <field name="model">pramadya.rail</field>
+      <field name="arch" type="xml">
+          <form>
+              <header>
+                  <field name="state" widget="statusbar" clickable="1" statusbar_visible="new,planning,scheduled,rtb,changeover,wip,onhold,completed"/>
+                  <button name="sync_l2l" string="Sync L2L" type="object" invisible="state != 'rtb'" class="oe_highlight" groups="pramadya_ekanban.group_erail_view_edit"/>
+                  <button name="ready" string="START" type="object" invisible="state in ['rtb','completed']" class="oe_highlight" groups="pramadya_ekanban.group_erail_view_edit"/>
+                  <button name="on_hold" string="ON HOLD" type="object" invisible="state in ['onhold','completed']" class="oe_highlight" groups="pramadya_ekanban.group_erail_view_edit"/>
+                  <button name="cancel_ready" string="Cancel to Build" type="object" invisible="state != 'rtb'" class="oe_highlight" groups="pramadya_ekanban.group_erail_view_edit"/>
+                  <button name="finish" string="Finish Production" confirm="Are you sure to finish this Kanban Rail?" invisible="state != 'rtb'" type="object" class="oe_highlight" groups="pramadya_ekanban.group_erail_view_edit"/>
+                  <button name="partial" string="Partial" confirm="Are you sure to Partial this Kanban Rail?" invisible="state != 'rtb'" type="object" class="oe_highlight" groups="pramadya_ekanban.group_erail_view_edit"/>
+              </header>
+              <sheet>
+                  <div class="oe_title">
+                      <label for="product_id"/>
+                      <h1>
+                          <field name="product_id" placeholder="e.g. AID Part Number"/>
+                      </h1>
+                  </div>
+                  <group>
+                    <group>
+                      <field name="schedule_date"/>
+                      <field name="due_date" readonly="1" force_save="1"/>
+                      <field name="actual_date"/>
+                      <field name="cycle"/>
+                      <field name="snp"/>
+                    </group>
+                    <group>
+                      <field name="qty" readonly="state not in ['new']"/>
+                      <field name="qty_build" invisible="line_id not in [2,20]"/>
+                      <field name="qty_build_actual" invisible="line_id in [2,20]"/>
+                      <field name="lat"/>
+                      <field name="cop_qty"/>
+                      <field name="sum_cop"/>
+                      <field name="line_id"/>
+                    </group>
+                  </group>
+                  <notebook>
+                    <page name="Pitch L2L" string="Pitch L2L">
+                        <field name="pitch_ids" nolabel="1">
+                            <tree>
+                                <field name="area"/>
+                                <field name="line"/>
+                                <field name="name" />
+                                <field name="actual_product" />
+                                <field name="actual" sum="actual qty"/>
+                                <field name="shift_start_date" />
+                                <field name="pitch_start" />
+                                <field name="pitch_end" />
+                                <field name="qty_move" string="Qty Finish" sum="move qty"/>
+                            </tree>
+                        </field>
+                    </page>
+                  </notebook>
+              </sheet>
+          </form>
+      </field>
+  </record>
+  <record model="ir.ui.view" id="view_rail_document_calendar">
+      <field name="name">pramadya.rail.calendar</field>
+      <field name="model">pramadya.rail</field>
+      <field name="priority" eval="2"/>
+      <field name="arch" type="xml">
+          <calendar string="Calendar View" date_start="schedule_date" color="product_id" event_limit="5" quick_create="0">
+              <field name="product_id" filters="1"/>
+              <field name="schedule_date"/>
+              <field name="due_date"/>
+              <field name="qty"/>
+              <field name="state"/>
+              <field name="cycle"/>
+              <field name="line_id"/>
+          </calendar>
+      </field>
+  </record>
+
+  <record model="ir.ui.view" id="view_rail_document_kanban">
+      <field name="name">pramadya.rail.kanban</field>
+      <field name="model">pramadya.rail</field>
+      <field name="arch" type="xml">
+          <kanban class="o_kanban_mobile" default_group_by="line_id" group_create="false" sample="1" default_order="status_rtb,status_stock_condition,schedule_date">
+              <field name="line_id"/>
+              <field name="product_id"/>
+              <field name="default_code"/>
+              <field name="aid_partnumber"/>
+              <field name="status_stock"/>
+              <field name="qty_available"/>
+              <field name="schedule_date"/>
+              <field name="due_date"/>
+              <field name="state"/>
+              <field name="qty"/>
+              <field name="qty_build"/>
+              <field name="cycle"/>
+              <field name="status_rtb"/>
+              <!-- <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/> -->
+              <templates>
+                  <t t-name="kanban-menu">
+                      <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit</a></t>
+                      <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                  </t>
+                  <t t-name="kanban-box">
+                      <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                          <div class="oe_kanban_content flex-grow-1">
+                            <div class="oe_kanban_details">
+                                <!-- <strong class="o_kanban_record_title"><field name="product_id"/></strong> -->
+                                <strong class="o_kanban_record_title">[<field name="default_code"/>] <field name="aid_partnumber"/></strong>
+                                <div>
+                                    <field name="sequence" invisible="True"/>
+                                    <!-- Add other fields you want to display on the Kanban card -->
+                                </div>
+                                <div>
+                                    Quantity : <field name="qty"/> (<field name="kanban_qty"/> Kanban)
+                                </div>
+                                <div>
+                                    COP : <field name="cop_qty"/>
+                                </div>
+                                <!-- <div>
+                                    Product Cycle Time : <field name="cycle"/>
+                                </div> -->
+                                <!-- <div>
+                                    Today Demand : <field name="today_demand"/>
+                                </div> -->
+                                <!-- <div>
+                                    rtb : <field name="status_rtb"/>
+                                </div> -->
+                                <!-- <div>
+                                    Stock On Hand : <field name="qty_available"/>
+                                </div> -->
+                                <!-- <div>
+                                    Demand Availability : <field name="stock_condition"/>
+                                </div> -->
+                                <div>
+                                    <field name="status_stock_condition" widget="label_selection" options="{'classes': {'01': 'danger','02': 'warning'}}"/>
+                                </div>
+                                <!-- <div>
+                                    Status Stock : <field name="status_stock" widget="label_selection" options="{'classes': {'urgent': 'danger', 'normal': 'success'}}"/>
+                                </div> -->
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <strong>
+                                            <field name="state" widget="label_selection" options="{'classes': {'rtb': 'info','planning': 'default','scheduled': 'secondary', 'confirmed': 'secondary', 'completed': 'success'}}"/>
+                                        </strong>
+                                        <strong invisible="status_cop == 'nocop'">
+                                            <field name="status_cop" widget="label_selection o_cop"/>
+                                        </strong>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <span>
+                                            <field name="qty_build" invisible="line_id not in [2,20]"/>
+                                            <field name="qty_build_actual" invisible="line_id in [2,20]" />
+                                            of 
+                                            <field name="sum_cop"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                          </div>
+                      </div>
+                  </t>
+              </templates>
+          </kanban>
+          </field>
+  </record>
+
+<record model="ir.ui.view" id="view_rail_document_gantt">
+      <field name="name">pramadya.rail.gantt</field>
+      <field name="model">pramadya.rail</field>
+      <field name="arch" type="xml">
+      <gantt date_stop="due_date" date_start="schedule_date" string="Line Production" default_group_by="line_id" decoration-success="state == 'done'" total_row="True" create="0" delete="0">
+        <field name="state"/>
+      </gantt>
+      <!-- <gantt class="o_mrp_workorder_gantt" date_stop="due_date" date_start="schedule_date" string="Line Production" default_group_by="line_id" create="0" delete="0" progress="progress" plan="0"  decoration-success="state == 'done'" decoration-warning="state == 'cancel' or (json_popover and 'text-warning' in json_popover)" color="workcenter_id" display_unavailability="0" progress_bar="workcenter_id" total_row="True" js_class="mrp_workorder_gantt" precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full', 'year': 'day:full'}" sample="1" form_view_id="1061">
+                <field name="schedule_date"/>
+                <field name="due_date"/>
+                <field name="state"/>
+                <field name="line_id"/>
+                <templates>
+                    <div t-name="gantt-popover" class="container-fluid">
+                        <div class="row g-0">
+                            <div class="col">
+                                <ul class="ps-1 mb-0 list-unstyled">
+                                    <li><strong>Start Date: </strong> <t t-esc="schedule_date.toFormat('F')"/></li>
+                                    <li><strong>Stop Date: </strong> <t t-esc="due_date.toFormat('F')"/></li>
+                                    <li><strong>Line: </strong> <t t-esc="line_id[1]"/></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </templates>
+        </gantt> -->
+      </field>
+  </record>
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="pramadya_ekanban.action_window_rail">
+      <field name="name">E-Kanban Rail</field>
+      <field name="res_model">pramadya.rail</field>
+      <field name="view_mode">kanban,gantt,calendar,tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="pramadya_ekanban.action_window_pitch">
+      <field name="name">L2L pitch</field>
+      <field name="res_model">pitch</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- actions -->
+
+    <menuitem name="E-Kanban Rail" id="pramadya_ekanban.menu_rail" parent="pramadya_ekanban.menu_root"
+              action="pramadya_ekanban.action_window_rail" sequence="1"/>
+
+    <menuitem name="Pitch L2L" id="pramadya_ekanban.menu_pitch" parent="pramadya_ekanban.menu_root"
+              action="pramadya_ekanban.action_window_pitch" sequence="99"/>
+
+</odoo>

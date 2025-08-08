@@ -1,0 +1,69 @@
+<odoo>
+    <data>
+    <record model="ir.ui.view" id="pramadya_product_wip_tree">
+        <field name="name">product.product.wip.tree</field>
+        <field name="model">product.product</field>
+        <field name="priority" eval="100"/>
+        <field name="arch" type="xml">
+            <tree sample="1" js_class="stock.stock_report_list_view">
+                <field name="id" column_invisible="True"/>
+                <field name="display_name" string="Product"/>
+                <field name="categ_id" optional="hide"/>
+                <field name="qty_available" string="On Hand" sum="Total On Hand"/>
+                <field name="e_lot" optional="show"/>
+                <field name="e_rail" optional="show"/>
+                <field name="fg_rotation" optional="show" string="Total FG Rotation"/>
+                <field name="demand_monthly" string="Forecast (Demand)"/>
+                <field name="daily_demand" optional="show"/>
+                <field name="lot_size" optional="show"/>
+                <field name="snp" optional="show"/>
+                <field name="total_kanban" string="Kanban On Hand" optional="show"/>
+                <field name="kanban_e_collecting" optional="show"/>
+                <field name="kanban_e_heijunka" optional="show"/>
+                <field name="kanban_e_lot" optional="show"/>
+                <field name="kanban_e_rail" optional="show"/>
+                <field name="kanban_rotation" optional="show"/>
+                <field name="std_rotation" optional="show" string="Kanban Calculation"/>
+                <field name="adjustment" optional="show"/>
+                <field name="selisih" optional="show"/>
+                <field name="uom_id" string="Unit" groups="uom.group_uom" options="{'no_create': True}"/>
+            </tree>
+        </field>
+    </record>
+    <record id="pramadya_product_wip" model="ir.actions.act_window">
+        <field name="name">Product WIP</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="pramadya_product_wip_tree"/>
+        <field name="search_view_id" ref="stock.stock_product_search_form_view"/>
+        <field name="context">{'default_detailed_type': 'product'}</field>
+        <field name="domain">[('categ_id.name','ilike','WIP'),('detailed_type', '=', 'product')]</field>
+    </record>
+    <record id="pramadya_rotation_wip" model="ir.actions.act_window">
+        <field name="name">Kanban Rotation</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pramadya_product_wip_tree"/>
+        <field name="search_view_id" ref="stock.stock_product_search_form_view"/>
+        <field name="context">{'default_detailed_type': 'product'}</field>
+        <field name="domain">[('categ_id.name','ilike','WIP'),('detailed_type', '=', 'product'),('lot', '=', 'lot')]</field>
+    </record>
+    <record id="pramadya_product_kanban_calculation_wip" model="ir.actions.act_window">
+        <field name="name">Kanban Calculation</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="pramadya_product_kanban_calculation_tree"/>
+        <field name="search_view_id" ref="stock.stock_product_search_form_view"/>
+        <field name="context">{'default_detailed_type': 'product'}</field>
+        <field name="domain">[('categ_id.name','ilike','WIP'),('detailed_type', '=', 'product'),('lot', '=', 'lot')]</field>
+    </record>
+    
+    <menuitem name="E-Kanban WIP" id="pramadya_ekanban.ekanban_wip" groups="pramadya_ekanban.group_elot_view,pramadya_ekanban.group_erail_view" web_icon="pramadya_ekanban,static/description/ekanban-wip.png"/>
+    <menuitem name="Products" id="pramadya_ekanban.menu_product_wip_list" parent="pramadya_ekanban.ekanban_wip"
+              action="pramadya_ekanban.pramadya_product_wip" groups="pramadya_ekanban.group_elot_view" sequence="7"/>
+    <menuitem name="Kanban Rotation" id="pramadya_ekanban.menu_pramadya_rotation_wip" parent="pramadya_ekanban.ekanban_wip"
+              action="pramadya_ekanban.pramadya_rotation_wip" groups="pramadya_ekanban.group_elot_view" sequence="80"/>
+    <menuitem name="Kanban Calculation" id="pramadya_ekanban.menu_pramadya_kanban_calculation_wip" parent="pramadya_ekanban.ekanban_wip"
+              action="pramadya_ekanban.pramadya_product_kanban_calculation_wip" groups="pramadya_ekanban.group_elot_view" sequence="80"/>
+    </data>
+</odoo>

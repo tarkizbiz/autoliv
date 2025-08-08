@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_wiz_kanban_cutting" model="ir.ui.view">
+        <field name="name">Kanban Cutting</field>
+        <field name="model">wiz.kanban.cutting</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+             <form string="Cut Kanban Card">
+                <group>
+                    <field name="attachment_ids" widget="many2many_binary" colspan="2" string="Select Files" nolabel="1" invisible="1"/>
+                    <field name="pdf_file" filename="pdf_name"/>
+                    <field name="pdf_name" invisible="1"/>
+                </group>                <footer>
+                    <button string="Cut" name="kanban_potong" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wiz_kanban_cutting" model="ir.actions.act_window">
+        <field name="name">Kanban Cut</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wiz.kanban.cutting</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wiz_kanban_cutting"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="main_wiz_kanban_cutting" parent="pramadya_kanban_cutting.menu_content_card" sequence="2" action="action_wiz_kanban_cutting"/>
+</odoo>

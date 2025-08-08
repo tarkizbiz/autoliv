@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="form_merge_rail" model="ir.ui.view">
+        <field name="name">form.merge.rail</field>
+        <field name="model">merge.rail</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Form Merge E-Rail">
+                <h4 style="font-family: 'Dancing Script', cursive;">Apakah anda Yakin akan Merge E-rail ini...???</h4>
+                <group>
+                    <group>
+                        <field name="product_id" readonly="1"/>
+                        <field name="qty"/>
+                        <field name="line_id"/>
+                    </group>
+                    <group>
+                        <field name="schedule_date"/>
+                        <field name="due_date"/>
+                        <field name="state"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="E-Rails">
+                        <field name="item_ids" nolabel="1" colspan="2">
+                            <tree string="Rails" create="false" editable="bottom">
+                                <field name="product_id"/>
+                                <field name="default_code"/>
+                                <field name="aid_partnumber"/>
+                                <field name="schedule_date"/>
+                                <field name="due_date"/>
+                                <field name="qty"/>
+                                <field name="line_id"/>
+                                <field name="state"/>
+                                <field name="rail_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+                
+                <footer>
+                    <button string="Merge" name="merge_rails" class="oe_highlight" type="object" />
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_merge_rail" model="ir.actions.act_window">
+        <field name="name">Merge E-Rail</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">merge.rail</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="form_merge_rail"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="pramadya_ekanban.model_pramadya_rail" />
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>

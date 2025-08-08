@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_print_kanban_card" model="ir.ui.view">
+        <field name="name">Print Kanban Card</field>
+        <field name="model">wiz.print.kanban.card</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+             <form string="Print Kanban Card">
+                <group>
+                     <field name="line_id" nolabel="1" colspan="2">
+                          <tree string="Details" create="0" delete="0">
+                            <field name="supplier_name"/>
+                            <field name="supplier_code"/>
+                            <field name="supplier_info"/>
+                            <field name="departure_time"/>
+                            <field name="departure_split_1" optional="hide"/>
+                            <field name="departure_split_2" optional="hide"/>
+                            <field name="arrival_time"/>
+                            <field name="arrival_split_1" optional="hide"/>
+                            <field name="arrival_split_2" optional="hide"/>
+                            <field name="route"/>
+                            <field name="cycle"/>
+                            <field name="dock_code"/>
+                            <field name="part_code"/>
+                            <field name="part_name"/>
+                            <field name="part_sequence"/>
+                            <field name="unique_no"/>
+                            <field name="unique_no_seq"/>
+                            <field name="pcs_kanban"/>
+                            <field name="order_no"/>
+                            <field name="order_split_1" optional="hide"/>
+                            <field name="order_split_2" optional="hide"/>
+                            <field name="order_split_3" optional="hide"/>
+                            <field name="barcode"/>
+                            <field name="qr_code"/>
+                            <field name="real_qr_code"/>
+                            <field name="progres_lane_no"/>
+                            <field name="out_time"/>
+                            <field name="out_time_split_1" optional="hide"/>
+                            <field name="out_time_split_2" optional="hide"/>
+                            <field name="manifest_no"/>
+                            <field name="conveyance_no"/>
+                            <field name="part_address"/>
+                            <field name="printed"/>
+                          </tree>
+                     </field>
+                 </group>
+                <footer>
+                    <button string="Print" name="print_pdf_tmmin" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_print_kanban_card_tmmin" model="ir.actions.act_window">
+        <field name="name">Print Kanban Card</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wiz.print.kanban.card</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_print_kanban_card"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_content_card_tmmin" />
+    </record>
+</odoo>

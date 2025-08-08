@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id='ir_cron_pramadya_lot' model='ir.cron'>
+            <field name='name'>E-Lot System: Send Lot to Kanban Rail</field>
+            <field name='model_id' ref='model_pramadya_lot'/>
+            <field name='state'>code</field>
+            <field name='code'>model.send_to_kanban()</field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>hours</field>
+            <field name='numbercall'>-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id='ir_cron_pramadya_kanban_rail' model='ir.cron'>
+            <field name='name'>E-Kanban Rail: Sync and Finish Kanban Rail</field>
+            <field name='model_id' ref='model_pramadya_rail'/>
+            <field name='state'>code</field>
+            <field name='code'>model._cron_rail()</field>
+            <field name='interval_number'>5</field>
+            <field name='interval_type'>minutes</field>
+            <field name='numbercall'>-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True" />
+        </record>
+        <record id='ir_cron_pramadya_kanban_rail_changeover' model='ir.cron'>
+            <field name='name'>E-Kanban Rail: Sync changeover Kanban Rail</field>
+            <field name='model_id' ref='model_pramadya_rail'/>
+            <field name='state'>code</field>
+            <field name='code'>model._cron_rail_changeover()</field>
+            <field name='interval_number'>10</field>
+            <field name='interval_type'>minutes</field>
+            <field name='numbercall'>-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id='ir_cron_delete_docs_after_specific_time' model='ir.cron'>
+            <field name='name'>Delete Documents After 30 Days</field>
+            <field name='model_id' ref='model_documents_document'/>
+            <field name='state'>code</field>
+            <field name='code'>model.delete_docs_cron()</field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name='numbercall'>-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="False" />
+        </record>
+
+        <record id='ir_cron_pramadya_selisih' model='ir.cron'>
+            <field name='name'>E-Adjustment kanban</field>
+            <field name='model_id' ref='model_product_product'/>
+            <field name='state'>code</field>
+            <field name='code'>model.cron_selisih()</field>
+            <field name='interval_number'>12</field>
+            <field name='interval_type'>hours</field>
+            <field name='numbercall'>-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id='ir_cron_pramadya_selisih_elot' model='ir.cron'>
+            <field name='name'>E-Adjustment kanban to Elot</field>
+            <field name='model_id' ref='model_product_product'/>
+            <field name='state'>code</field>
+            <field name='code'>model.cron_adjustment()</field>
+            <field name='interval_number'>12</field>
+            <field name='interval_type'>hours</field>
+            <field name='numbercall'>-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id='ir_cron_pramadya_heijunka' model='ir.cron'>
+            <field name='name'>E-Collecting to heijunka</field>
+            <field name='model_id' ref='model_collecting'/>
+            <field name='state'>code</field>
+            <field name='code'>model.cron_heijunka()</field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>days</field>
+            <field name='numbercall'>-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id='ir_cron_pramadya_heijunka_lot' model='ir.cron'>
+            <field name='name'>E-heijunka to LOT</field>
+            <field name='model_id' ref='model_heijunka'/>
+            <field name='state'>code</field>
+            <field name='code'>model.cron_heijunka_lot()</field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>hours</field>
+            <field name='numbercall'>-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id='ir_cron_pramadya_pitch' model='ir.cron'>
+            <field name='name'>pitch</field>
+            <field name='model_id' ref='model_pitch'/>
+            <field name='state'>code</field>
+            <field name='code'>model.get_pitch()</field>
+            <field name='interval_number'>5</field>
+            <field name='interval_type'>minutes</field>
+            <field name='numbercall'>-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id='ir_cron_urgent' model='ir.cron'>
+            <field name='name'>compute urgent</field>
+            <field name='model_id' ref='model_product_product'/>
+            <field name='state'>code</field>
+            <field name='code'>model.compute_urgent()</field>
+            <field name='interval_number'>15</field>
+            <field name='interval_type'>minutes</field>
+            <field name='numbercall'>-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True" />
+        </record>
+
+        <record id='ir_cron_pramadya_rail_pitch' model='ir.cron'>
+            <field name='name'>Get rail l2l</field>
+            <field name='model_id' ref='model_pramadya_rail'/>
+            <field name='state'>code</field>
+            <field name='code'>model.cron_sync_l2l()</field>
+            <field name='interval_number'>15</field>
+            <field name='interval_type'>minutes</field>
+            <field name='numbercall'>-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True" />
+        </record>
+    </data>
+</odoo>

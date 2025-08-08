@@ -1,0 +1,21 @@
+{
+    "name": "Kanban Cutting",
+    "version": "1.01",
+    'author': "Pramadya Teknologi Indonesia",
+    'website': "https://www.pramadya.co.id",
+    "license": "",
+    "category": "Inventory",
+    'website': "",
+    'depends' : ['base','documents'],
+    "data": [
+             'security/ir.model.access.csv',
+             'data/workflow_data.xml',
+             'data/sequence_data.xml',
+             'wizard/wiz_print_kanban_card_view.xml',
+             'views/content_card_view.xml',
+             'wizard/wiz_kanban_cutting_view.xml',
+             'report/print_kanban_card.xml',
+             ],
+    'installable': True,
+    'auto_install': False,
+}
